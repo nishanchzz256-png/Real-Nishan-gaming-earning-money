@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nishan Gaming</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 15px;
+  background: #0f172a;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+header {
+  text-align: center;
+  padding: 25px 10px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+}
+
+header h1 {
+  margin: 0;
+}
+
+header p {
+  color: #e0e7ff;
+}
+
+.card {
+  background: #1e293b;
+  padding: 18px;
+  margin-top: 16px;
+  border-radius: 14px;
+  border: 1px solid #334155;
+}
+
+h2 {
+  color: #38bdf8;
+  font-size: 21px;
+}
+
+button {
+  width: 100%;
+  padding: 13px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 9px;
+  background: #0284c7;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:disabled {
+  background: #475569;
+  cursor: not-allowed;
+}
+
+input {
+  display: block;
+  width: 100%;
+  padding: 13px;
+  margin-top: 10px;
+  background: #0f172a;
+  color: white;
+  border: 1px solid #475569;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.score {
+  font-size: 42px;
+  color: #4ade80;
+  text-align: center;
+  font-weight: bold;
+  margin: 15px;
+}
+
+.info {
+  color: #cbd5e1;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid #334155;
+}
+
+.notice {
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: 10px;
+  background: #422006;
+  color: #fde68a;
+  line-height: 1.6;
+  font-size: 13px;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+.hidden {
+  display: none;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🎮 Nishan Gaming</h1>
+  <p>Play Games • Earn Demo Points • Refer Friends</p>
+</header>
+
+<!-- LOGIN AND REGISTER DEMO -->
+<section class="card" id="auth">
+  <h2>👤 Login / Register</h2>
+  <p class="info">
+    डेमो अकाउंट बनाने के लिए अपना नाम डालें।
+    यह सुरक्षित ऑनलाइन अकाउंट सिस्टम नहीं है।
+  </p>
+
+  <input id="username"
+         type="text"
+         maxlength="30"
+         placeholder="अपना नाम लिखें">
+
+  <button id="loginBtn">Enter Game</button>
+  <p id="authMsg" class="info"></p>
+</section>
+
+<section class="card hidden" id="profile">
+  <h2>👋 Welcome, <span id="playerName"></span>!</h2>
+  <p class="info">तुम्हारा डेमो गेम अकाउंट चालू है।</p>
+  <button id="logoutBtn">Logout</button>
+</section>
+
+<!-- GAME -->
+<section class="card">
+  <h2>🎯 Tap Challenge</h2>
+  <p class="info">
+    15 सेकंड में जितनी बार हो सके बटन दबाओ।
+    हर टैप पर एक डेमो पॉइंट मिलेगा।
+  </p>
+
+  <div class="score" id="score">0</div>
+  <p style="text-align:center">Current Score</p>
+
+  <button id="startBtn">▶ Start Game</button>
+  <button id="tapBtn" disabled>👆 TAP HERE!</button>
+
+  <p id="timer" style="text-align:center">
+    Time Left: 15 seconds
+  </p>
+
+  <p id="gameMsg" class="info"></p>
+</section>
+
+<!-- STATISTICS -->
+<section class="card">
+  <h2>🏆 Statistics</h2>
+
+  <div class="row">
+    <span>Total Demo Points</span>
+    <strong id="totalPoints">0</strong>
+  </div>
+
+  <div class="row">
+    <span>Best Score</span>
+    <strong id="bestScore">0</strong>
+  </div>
+
+  <div class="row">
+    <span>Games Played</span>
+    <strong id="gamesPlayed">0</strong>
+  </div>
+</section>
+
+<!-- REFERRAL -->
+<section class="card">
+  <h2>👥 Refer & Earn</h2>
+
+  <p class="info">
+    अपना डेमो रेफरल कोड दोस्तों को दिखा सकते हो।
+    असली रेफरल ट्रैकिंग अभी चालू नहीं है।
+  </p>
+
+  <input id="refCode" readonly value="NISHAN-DEMO">
+
+  <button id="showCodeBtn">Show Referral Code</button>
+
+  <p id="refMsg" class="info"></p>
+</section>
+
+<!-- WALLET -->
+<section class="card">
+  <h2>💰 Rewards Wallet</h2>
+
+  <div class="row">
+    <span>Demo Reward Points</span>
+    <strong id="walletPoints">0</strong>
+  </div>
+
+  <p class="info">
+    ये केवल डेमो पॉइंट हैं। इनका कोई नकद मूल्य नहीं है।
+    इन्हें बैंक या UPI से नहीं निकाला जा सकता।
+  </p>
+
+  <button disabled>Bank / UPI Withdrawal Unavailable</button>
+</section>
+
+<!-- LEADERBOARD -->
+<section class="card">
+  <h2>🥇 Leaderboard</h2>
+
+  <p class="info">
+    यह केवल इसी डिवाइस का डेमो स्कोर दिखाता है।
+    यह सभी ऑनलाइन खिलाड़ियों की लाइव रैंकिंग नहीं है।
+  </p>
+
+  <div class="row">
+    <span>Your Best Score</span>
+    <strong id="leaderScore">0</strong>
+  </div>
+</section>
+
+<!-- ADMIN DEMO -->
+<section class="card">
+  <h2>⚙️ Admin Panel</h2>
+
+  <p class="info">
+    यह केवल एडमिन पेज का डेमो विवरण है।
+    सुरक्षित एडमिन लॉगिन और यूज़र मैनेजमेंट
+    सर्वर पर अलग से बनाना होगा।
+  </p>
+
+  <button disabled>Admin Controls — Not Activated</button>
+</section>
+
+<section class="notice">
+  <strong>Important Notice</strong><br>
+  Nishan Gaming अभी एक फ्री गेमिंग डेमो है।
+  इसमें असली पैसे की कमाई, भुगतान, रेफरल रिवॉर्ड
+  या बैंक/UPI निकासी उपलब्ध नहीं है।
+  असली भुगतान सिस्टम बनाने से पहले लागू कानून,
+  सुरक्षा और भुगतान प्रदाता की शर्तों की जाँच करें।
+</section>
+
+<footer>
+  Nishan Gaming © 2026<br>
+  Gaming Demo
+</footer>
+
+<script>
+let score = 0;
+let timeLeft = 15;
+let running = false;
+let timer = null;
+
+let totalPoints = 0;
+let bestScore = 0;
+let gamesPlayed = 0;
+
+const $ = id => document.getElementById(id);
+
+function updateDisplay() {
+  $("score").textContent = score;
+  $("totalPoints").textContent = totalPoints;
+  $("walletPoints").textContent = totalPoints;
+  $("bestScore").textContent = bestScore;
+  $("gamesPlayed").textContent = gamesPlayed;
+  $("leaderScore").textContent = bestScore;
+}
+
+function endGame() {
+  clearInterval(timer);
+  running = false;
+
+  $("tapBtn").disabled = true;
+  $("startBtn").disabled = false;
+
+  totalPoints += score;
+  gamesPlayed++;
+
+  if (score > bestScore) {
+    bestScore = score;
+  }
+
+  $("timer").textContent = "Game Over!";
+  $("gameMsg").textContent =
+    "Great job! You scored " + score + " demo points.";
+
+  updateDisplay();
+}
+
+$("startBtn").addEventListener("click", function() {
+  if (running) return;
+
+  score = 0;
+  timeLeft = 15;
+  running = true;
+
+  $("startBtn").disabled = true;
+  $("tapBtn").disabled = false;
+  $("gameMsg").textContent = "";
+  $("timer").textContent = "Time Left: 15 seconds";
+
+  updateDisplay();
+
+  timer = setInterval(function() {
+    timeLeft--;
+
+    $("timer").textContent =
+      "Time Left: " + timeLeft + " seconds";
+
+    if (timeLeft <= 0) {
+      endGame();
+    }
+  }, 1000);
+});
+
+$("tapBtn").addEventListener("click", function() {
+  if (!running) return;
+
+  score++;
+  updateDisplay();
+});
+
+$("loginBtn").addEventListener("click", function() {
+  const name = $("username").value.trim();
+
+  if (!name) {
+    $("authMsg").textContent = "कृपया अपना नाम लिखें।";
+    return;
+  }
+
+  $("playerName").textContent = name;
+  $("profile").classList.remove("hidden");
+  $("auth").classList.add("hidden");
+});
+
+$("logoutBtn").addEventListener("click", function() {
+  $("profile").classList.add("hidden");
+  $("auth").classList.remove("hidden");
+});
+
+$("showCodeBtn").addEventListener("click", function() {
+  $("refMsg").textContent =
+    "तुम्हारा डेमो रेफरल कोड NISHAN-DEMO है। " +
+    "अभी किसी रेफरल का सत्यापन या भुगतान नहीं होता।";
+});
+
+updateDisplay();
+</script>
+
+</body>
+</html>
