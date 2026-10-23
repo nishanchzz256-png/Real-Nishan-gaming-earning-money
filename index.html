@@ -4,369 +4,328 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nishan Gaming</title>
-
 <style>
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  padding: 15px;
-  background: #0f172a;
-  color: white;
-  font-family: Arial, sans-serif;
-}
-
-header {
-  text-align: center;
-  padding: 25px 10px;
-  border-radius: 16px;
-  background: linear-gradient(135deg, #2563eb, #7c3aed);
-}
-
-header h1 {
-  margin: 0;
-}
-
-header p {
-  color: #e0e7ff;
-}
-
-.card {
-  background: #1e293b;
-  padding: 18px;
-  margin-top: 16px;
-  border-radius: 14px;
-  border: 1px solid #334155;
-}
-
-h2 {
-  color: #38bdf8;
-  font-size: 21px;
-}
-
-button {
-  width: 100%;
-  padding: 13px;
-  margin-top: 10px;
-  border: none;
-  border-radius: 9px;
-  background: #0284c7;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-button:disabled {
-  background: #475569;
-  cursor: not-allowed;
-}
-
-input {
-  display: block;
-  width: 100%;
-  padding: 13px;
-  margin-top: 10px;
-  background: #0f172a;
-  color: white;
-  border: 1px solid #475569;
-  border-radius: 8px;
-  font-size: 16px;
-}
-
-.score {
-  font-size: 42px;
-  color: #4ade80;
-  text-align: center;
-  font-weight: bold;
-  margin: 15px;
-}
-
-.info {
-  color: #cbd5e1;
-  font-size: 14px;
-  line-height: 1.7;
-}
-
-.row {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 10px 0;
-  border-bottom: 1px solid #334155;
-}
-
-.notice {
-  margin-top: 16px;
-  padding: 14px;
-  border-radius: 10px;
-  background: #422006;
-  color: #fde68a;
-  line-height: 1.6;
-  font-size: 13px;
-}
-
-footer {
-  text-align: center;
-  padding: 20px;
-  color: #94a3b8;
-  font-size: 12px;
-}
-
-.hidden {
-  display: none;
-}
+*{box-sizing:border-box}
+body{margin:0;background:#0b1020;color:white;font-family:Arial,sans-serif}
+header{text-align:center;padding:20px;background:#10182b}
+main{max-width:900px;margin:auto;padding:14px}
+.panel,.game{background:#151d32;border:1px solid #354260;padding:14px;border-radius:12px;margin-bottom:12px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+button,input{padding:12px;border:0;border-radius:8px;font-size:16px;width:100%;margin:3px}
+button{background:#7657ff;color:white;font-weight:bold}
+input{background:#0e1629;color:white;border:1px solid #354260}
+.muted{color:#aab6d2;font-size:13px}
+.hidden{display:none!important}
+.result{color:#36d399;min-height:25px}
+.big{font-size:24px}
+@media(min-width:600px){.grid{grid-template-columns:repeat(3,1fr)}}
 </style>
 </head>
-
 <body>
 
 <header>
-  <h1>🎮 Nishan Gaming</h1>
-  <p>Play Games • Earn Demo Points • Refer Friends</p>
+<h1>🎮 Nishan Gaming</h1>
+<p>15 Mini Games • Play & Have Fun</p>
 </header>
 
-<!-- LOGIN AND REGISTER DEMO -->
-<section class="card" id="auth">
-  <h2>👤 Login / Register</h2>
-  <p class="info">
-    डेमो अकाउंट बनाने के लिए अपना नाम डालें।
-    यह सुरक्षित ऑनलाइन अकाउंट सिस्टम नहीं है।
-  </p>
+<main>
 
-  <input id="username"
-         type="text"
-         maxlength="30"
-         placeholder="अपना नाम लिखें">
+<div class="panel">
+<b>ध्यान दें:</b>
+<p class="muted">यह गेम डेमो है। पॉइंट असली पैसे नहीं हैं।
+असली पैसे जमा करने या निकालने की सुविधा इसमें नहीं है।</p>
+</div>
 
-  <button id="loginBtn">Enter Game</button>
-  <p id="authMsg" class="info"></p>
-</section>
+<div class="panel" id="login">
+<h2>👤 Demo Login</h2>
+<input id="name" placeholder="अपना नाम लिखें">
+<button onclick="login()">Login</button>
+<p id="msg" class="result"></p>
+</div>
 
-<section class="card hidden" id="profile">
-  <h2>👋 Welcome, <span id="playerName"></span>!</h2>
-  <p class="info">तुम्हारा डेमो गेम अकाउंट चालू है।</p>
-  <button id="logoutBtn">Logout</button>
-</section>
+<div class="panel hidden" id="profile">
+<h3>नमस्ते, <span id="username"></span>!</h3>
+<div class="big">⭐ <span id="points">0</span> Points</div>
+<p class="muted">ये केवल डेमो पॉइंट हैं।</p>
+<button onclick="logout()">Logout</button>
+</div>
 
-<!-- GAME -->
-<section class="card">
-  <h2>🎯 Tap Challenge</h2>
-  <p class="info">
-    15 सेकंड में जितनी बार हो सके बटन दबाओ।
-    हर टैप पर एक डेमो पॉइंट मिलेगा।
-  </p>
+<div class="panel">
+<h2>🎮 15 Games</h2>
+<div class="grid" id="games"></div>
+</div>
 
-  <div class="score" id="score">0</div>
-  <p style="text-align:center">Current Score</p>
+<div class="panel">
+<h2>👛 Demo Wallet</h2>
+<p>आपके पॉइंट: <b id="wallet">0</b></p>
+<p class="muted">यहाँ Deposit और Withdrawal उपलब्ध नहीं हैं।</p>
+</div>
 
-  <button id="startBtn">▶ Start Game</button>
-  <button id="tapBtn" disabled>👆 TAP HERE!</button>
+<div class="panel">
+<h2>🤝 Refer & Earn Demo</h2>
+<p>आपका रेफरल कोड: <b id="ref">NISHAN-DEMO</b></p>
+<button onclick="copyRef()">Copy Referral Code</button>
+<p id="refmsg" class="result"></p>
+</div>
 
-  <p id="timer" style="text-align:center">
-    Time Left: 15 seconds
-  </p>
+<div class="panel hidden" id="area">
+<h2 id="title">Game</h2>
+<div id="play"></div>
+<p id="result" class="result"></p>
+<button onclick="closeGame()">गेम बंद करें</button>
+</div>
 
-  <p id="gameMsg" class="info"></p>
-</section>
-
-<!-- STATISTICS -->
-<section class="card">
-  <h2>🏆 Statistics</h2>
-
-  <div class="row">
-    <span>Total Demo Points</span>
-    <strong id="totalPoints">0</strong>
-  </div>
-
-  <div class="row">
-    <span>Best Score</span>
-    <strong id="bestScore">0</strong>
-  </div>
-
-  <div class="row">
-    <span>Games Played</span>
-    <strong id="gamesPlayed">0</strong>
-  </div>
-</section>
-
-<!-- REFERRAL -->
-<section class="card">
-  <h2>👥 Refer & Earn</h2>
-
-  <p class="info">
-    अपना डेमो रेफरल कोड दोस्तों को दिखा सकते हो।
-    असली रेफरल ट्रैकिंग अभी चालू नहीं है।
-  </p>
-
-  <input id="refCode" readonly value="NISHAN-DEMO">
-
-  <button id="showCodeBtn">Show Referral Code</button>
-
-  <p id="refMsg" class="info"></p>
-</section>
-
-<!-- WALLET -->
-<section class="card">
-  <h2>💰 Rewards Wallet</h2>
-
-  <div class="row">
-    <span>Demo Reward Points</span>
-    <strong id="walletPoints">0</strong>
-  </div>
-
-  <p class="info">
-    ये केवल डेमो पॉइंट हैं। इनका कोई नकद मूल्य नहीं है।
-    इन्हें बैंक या UPI से नहीं निकाला जा सकता।
-  </p>
-
-  <button disabled>Bank / UPI Withdrawal Unavailable</button>
-</section>
-
-<!-- LEADERBOARD -->
-<section class="card">
-  <h2>🥇 Leaderboard</h2>
-
-  <p class="info">
-    यह केवल इसी डिवाइस का डेमो स्कोर दिखाता है।
-    यह सभी ऑनलाइन खिलाड़ियों की लाइव रैंकिंग नहीं है।
-  </p>
-
-  <div class="row">
-    <span>Your Best Score</span>
-    <strong id="leaderScore">0</strong>
-  </div>
-</section>
-
-<!-- ADMIN DEMO -->
-<section class="card">
-  <h2>⚙️ Admin Panel</h2>
-
-  <p class="info">
-    यह केवल एडमिन पेज का डेमो विवरण है।
-    सुरक्षित एडमिन लॉगिन और यूज़र मैनेजमेंट
-    सर्वर पर अलग से बनाना होगा।
-  </p>
-
-  <button disabled>Admin Controls — Not Activated</button>
-</section>
-
-<section class="notice">
-  <strong>Important Notice</strong><br>
-  Nishan Gaming अभी एक फ्री गेमिंग डेमो है।
-  इसमें असली पैसे की कमाई, भुगतान, रेफरल रिवॉर्ड
-  या बैंक/UPI निकासी उपलब्ध नहीं है।
-  असली भुगतान सिस्टम बनाने से पहले लागू कानून,
-  सुरक्षा और भुगतान प्रदाता की शर्तों की जाँच करें।
-</section>
-
-<footer>
-  Nishan Gaming © 2026<br>
-  Gaming Demo
-</footer>
+</main>
 
 <script>
-let score = 0;
-let timeLeft = 15;
-let running = false;
-let timer = null;
+let user="";
+let points=0;
+let timer=null;
 
-let totalPoints = 0;
-let bestScore = 0;
-let gamesPlayed = 0;
+const list=[
+["🧠","Quick Quiz"],
+["🐍","Snake Tap"],
+["🧩","Memory Match"],
+["⭕","Tic-Tac-Toe"],
+["🎯","Target Tap"],
+["🏏","Cricket Click"],
+["✊","Rock Paper Scissors"],
+["🔢","Number Guess"],
+["➗","Math Sprint"],
+["🪙","Coin Flip"],
+["🎲","Dice Roll"],
+["⚡","Reaction Test"],
+["🎨","Color Match"],
+["🔤","Word Scramble"],
+["📈","Higher or Lower"]
+];
 
-const $ = id => document.getElementById(id);
+document.getElementById("games").innerHTML=list.map((g,i)=>
+`<div class="game">
+<div style="font-size:28px">${g[0]}</div>
+<h3>${i+1}. ${g[1]}</h3>
+<button onclick="start(${i})">Play</button>
+</div>`
+).join("");
 
-function updateDisplay() {
-  $("score").textContent = score;
-  $("totalPoints").textContent = totalPoints;
-  $("walletPoints").textContent = totalPoints;
-  $("bestScore").textContent = bestScore;
-  $("gamesPlayed").textContent = gamesPlayed;
-  $("leaderScore").textContent = bestScore;
+function login(){
+let n=document.getElementById("name").value.trim();
+if(!n){document.getElementById("msg").textContent="पहले नाम लिखें";return}
+user=n;
+document.getElementById("username").textContent=user;
+document.getElementById("login").classList.add("hidden");
+document.getElementById("profile").classList.remove("hidden");
+document.getElementById("ref").textContent="NISHAN-"+user.toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,10);
 }
 
-function endGame() {
-  clearInterval(timer);
-  running = false;
-
-  $("tapBtn").disabled = true;
-  $("startBtn").disabled = false;
-
-  totalPoints += score;
-  gamesPlayed++;
-
-  if (score > bestScore) {
-    bestScore = score;
-  }
-
-  $("timer").textContent = "Game Over!";
-  $("gameMsg").textContent =
-    "Great job! You scored " + score + " demo points.";
-
-  updateDisplay();
+function logout(){
+user="";
+document.getElementById("profile").classList.add("hidden");
+document.getElementById("login").classList.remove("hidden");
+closeGame();
 }
 
-$("startBtn").addEventListener("click", function() {
-  if (running) return;
+function add(n){
+points+=n;
+document.getElementById("points").textContent=points;
+document.getElementById("wallet").textContent=points;
+}
 
-  score = 0;
-  timeLeft = 15;
-  running = true;
+function closeGame(){
+if(timer){clearInterval(timer);clearTimeout(timer);timer=null}
+document.getElementById("area").classList.add("hidden");
+document.getElementById("play").innerHTML="";
+document.getElementById("result").textContent="";
+}
 
-  $("startBtn").disabled = true;
-  $("tapBtn").disabled = false;
-  $("gameMsg").textContent = "";
-  $("timer").textContent = "Time Left: 15 seconds";
+function start(i){
+if(!user){
+document.getElementById("msg").textContent="पहले Login करें";
+return;
+}
 
-  updateDisplay();
+closeGame();
+document.getElementById("area").classList.remove("hidden");
+document.getElementById("title").textContent=list[i][0]+" "+list[i][1];
 
-  timer = setInterval(function() {
-    timeLeft--;
+let p=document.getElementById("play");
+let r=document.getElementById("result");
 
-    $("timer").textContent =
-      "Time Left: " + timeLeft + " seconds";
+function win(text,n=2){
+add(n);
+r.textContent=text+" +"+n+" demo points";
+}
 
-    if (timeLeft <= 0) {
-      endGame();
-    }
-  }, 1000);
+if(i===0){
+let qs=[
+["भारत की राजधानी?",["मुंबई","दिल्ली","चेन्नई"],1],
+["एक सप्ताह में कितने दिन?",["5","7","9"],1],
+["पानी का सूत्र?",["H2O","CO2","O2"],0]
+];
+let q=qs[Math.floor(Math.random()*qs.length)];
+p.innerHTML="<h3>"+q[0]+"</h3>"+q[1].map((x,j)=>
+`<button onclick="answer(${j},${q[2]})">${x}</button>`).join("");
+window.answer=(a,b)=>a===b?win("सही जवाब!",5):r.textContent="गलत जवाब";
+}
+
+if(i===1){
+p.innerHTML='<p>जितनी बार टैप करेंगे, उतने पॉइंट मिलेंगे।</p><button id="tap">🐍 TAP!</button>';
+p.querySelector("button").onclick=()=>win("अच्छा टैप!",1);
+}
+
+if(i===2){
+let a=["🍎","🚀","🎮","⭐","🍎","🚀","🎮","⭐"].sort(()=>Math.random()-.5);
+let first=null,lock=false,matched=0;
+p.innerHTML='<div class="grid">'+a.map((x,j)=>`<button data-j="${j}">❔</button>`).join("")+'</div>';
+p.querySelectorAll("button").forEach((b,j)=>b.onclick=()=>{
+if(lock||b.disabled||b.textContent!=="❔")return;
+b.textContent=a[j];
+if(!first){first=b;return}
+if(first.textContent===b.textContent){
+first.disabled=b.disabled=true;first=null;matched+=2;
+if(matched===8)win("सभी जोड़े मिल गए!",10);
+}else{
+lock=true;let old=first;first=null;
+setTimeout(()=>{old.textContent="❔";b.textContent="❔";lock=false},600);
+}
 });
+}
 
-$("tapBtn").addEventListener("click", function() {
-  if (!running) return;
+if(i===3){
+let a=Array(9).fill("");
+function draw(){
+p.innerHTML='<div class="grid">'+a.map((x,j)=>`<button onclick="move(${j})">${x||"⬜"}</button>`).join("")+'</div><button onclick="start(3)">Restart</button>';
+}
+function check(){
+for(let [x,y,z] of [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]){
+if(a[x]&&a[x]===a[y]&&a[x]===a[z])return a[x];
+}
+return "";
+}
+window.move=j=>{
+if(a[j])return;
+a[j]="X";
+if(check()==="X"){win("आप जीते!",5);draw();return}
+let free=a.map((v,j)=>v?null:j).filter(v=>v!==null);
+if(free.length)a[free[Math.floor(Math.random()*free.length)]]="O";
+if(check()==="O")r.textContent="कंप्यूटर जीता";
+else if(a.every(Boolean))r.textContent="ड्रॉ!";
+draw();
+};
+draw();
+}
 
-  score++;
-  updateDisplay();
+if(i===4){
+p.innerHTML='<p>10 सेकंड में ज्यादा टैप करें।</p><button id="hit" disabled>TAP!</button><p id="time">10</p><button id="begin">Start</button>';
+let count=0;
+p.querySelector("#begin").onclick=()=>{
+if(timer)clearInterval(timer);
+count=0;let t=10;
+p.querySelector("#hit").disabled=false;
+p.querySelector("#hit").onclick=()=>{count++;r.textContent="टैप: "+count};
+timer=setInterval(()=>{
+t--;p.querySelector("#time").textContent=t;
+if(t<=0){clearInterval(timer);timer=null;p.querySelector("#hit").disabled=true;win("समय पूरा! टैप "+count,Math.floor(count/2))}
+},1000);
+};
+}
+
+if(i===5){
+let s=0;
+p.innerHTML='<p>रन बनाइए।</p><div class="grid">'+[1,2,4,6].map(n=>`<button data-run="${n}">${n} रन</button>`).join("")+'</div><p>स्कोर: <span id="score">0</span></p>';
+p.querySelectorAll("[data-run]").forEach(b=>b.onclick=()=>{
+if(Math.random()<0.15){r.textContent="Out! स्कोर: "+s;return}
+s+=Number(b.dataset.run);
+p.querySelector("#score").textContent=s;
+if(s>=12)win("आपने 12 रन बनाए!",5);
 });
+}
 
-$("loginBtn").addEventListener("click", function() {
-  const name = $("username").value.trim();
-
-  if (!name) {
-    $("authMsg").textContent = "कृपया अपना नाम लिखें।";
-    return;
-  }
-
-  $("playerName").textContent = name;
-  $("profile").classList.remove("hidden");
-  $("auth").classList.add("hidden");
+if(i===6){
+p.innerHTML='<div class="grid">'+["पत्थर","कागज़","कैंची"].map(x=>`<button data-v="${x}">${x}</button>`).join("")+'</div>';
+p.querySelectorAll("button").forEach(b=>b.onclick=()=>{
+let c=["पत्थर","कागज़","कैंची"][Math.floor(Math.random()*3)];
+let u=b.dataset.v;
+if(u===c)r.textContent="टाई! "+c;
+else if((u==="पत्थर"&&c==="कैंची")||(u==="कागज़"&&c==="पत्थर")||(u==="कैंची"&&c==="कागज़"))win("आप जीते! कंप्यूटर: "+c,3);
+else r.textContent="कंप्यूटर जीता: "+c;
 });
+}
 
-$("logoutBtn").addEventListener("click", function() {
-  $("profile").classList.add("hidden");
-  $("auth").classList.remove("hidden");
-});
+if(i===7){
+let n=1+Math.floor(Math.random()*20);
+p.innerHTML='<p>1 से 20 के बीच नंबर चुनें।</p><input id="guess" type="number" min="1" max="20"><button id="check">Check</button>';
+p.querySelector("#check").onclick=()=>{
+let v=Number(p.querySelector("#guess").value);
+if(v===n)win("सही नंबर!",5);
+else r.textContent=v<n?"थोड़ा बड़ा नंबर चुनें":"थोड़ा छोटा नंबर चुनें";
+};
+}
 
-$("showCodeBtn").addEventListener("click", function() {
-  $("refMsg").textContent =
-    "तुम्हारा डेमो रेफरल कोड NISHAN-DEMO है। " +
-    "अभी किसी रेफरल का सत्यापन या भुगतान नहीं होता।";
-});
+if(i===8){
+let x=1+Math.floor(Math.random()*20),y=1+Math.floor(Math.random()*20);
+p.innerHTML=`<h3>${x} + ${y} = ?</h3><input id="math" type="number"><button id="check">Check</button>`;
+p.querySelector("#check").onclick=()=>Number(p.querySelector("#math").value)===x+y?win("सही जवाब!",3):r.textContent="फिर कोशिश करें";
+}
 
-updateDisplay();
+if(i===9){
+p.innerHTML='<button onclick="flip()">Head या Tail?</button>';
+window.flip=()=>{let v=Math.random()<0.5?"Head":"Tail";r.textContent="नतीजा: "+v;win("Coin Flip",2)};
+}
+
+if(i===10){
+p.innerHTML='<button onclick="roll()">🎲 Roll Dice</button><div class="big" id="dice"></div>';
+window.roll=()=>{let n=1+Math.floor(Math.random()*6);p.querySelector("#dice").textContent=n;n>=4?win("अच्छा रोल!",2):r.textContent="फिर कोशिश करें"};
+}
+
+if(i===11){
+p.innerHTML='<button id="react">Start</button>';
+let b=p.querySelector("#react"),ready=false,at=0;
+b.onclick=()=>{
+b.disabled=true;b.textContent="रुकिए...";
+timer=setTimeout(()=>{
+ready=true;at=Date.now();b.disabled=false;b.textContent="अब टैप करें!";
+},1000+Math.random()*2000);
+b.onclick=()=>{
+if(ready){let ms=Date.now()-at;r.textContent="Reaction: "+ms+" ms";if(ms<500)win("बहुत तेज!",3)}
+};
+};
+}
+
+if(i===12){
+let colors=[["लाल","#ef4444"],["नीला","#3b82f6"],["हरा","#22c55e"],["पीला","#eab308"]];
+let c=colors[Math.floor(Math.random()*colors.length)];
+p.innerHTML='<div style="height:65px;background:'+c[1]+'"></div><p>इस रंग का नाम चुनें:</p><div class="grid">'+colors.map(x=>`<button data-c="${x[0]}">${x[0]}</button>`).join("")+'</div>';
+p.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>b.dataset.c===c[0]?win("सही रंग!",3):r.textContent="गलत जवाब");
+}
+
+if(i===13){
+let words=[["KCAE","CAKE"],["PLEPA","APPLE"],["EMAG","GAME"],["NIGK","KING"]];
+let w=words[Math.floor(Math.random()*words.length)];
+p.innerHTML='<p>अक्षर सही क्रम में लगाएँ: <b>'+w[0]+'</b></p><input id="word"><button id="check">Check</button>';
+p.querySelector("#check").onclick=()=>p.querySelector("#word").value.trim().toUpperCase()===w[1]?win("सही शब्द!",4):r.textContent="फिर कोशिश करें";
+}
+
+if(i===14){
+let cur=1+Math.floor(Math.random()*10),next=1+Math.floor(Math.random()*10);
+p.innerHTML='<p>अगला नंबर बड़ा होगा या छोटा?</p><h2 id="cur">'+cur+'</h2><div class="grid"><button onclick="higher(true)">Higher ⬆️</button><button onclick="higher(false)">Lower ⬇️</button></div>';
+window.higher=up=>{
+let ok=up?next>cur:next<cur;
+r.textContent="अगला नंबर: "+next;
+if(ok)win("सही अनुमान!",2);
+else if(next===cur)r.textContent+=" टाई!";
+else r.textContent+=" गलत अनुमान";
+cur=next;next=1+Math.floor(Math.random()*10);
+p.querySelector("#cur").textContent=cur;
+};
+}
+}
+function copyRef(){
+let code=document.getElementById("ref").textContent;
+if(navigator.clipboard){
+navigator.clipboard.writeText(code).then(()=>document.getElementById("refmsg").textContent="कोड कॉपी हो गया").catch(()=>document.getElementById("refmsg").textContent=code);
+}else document.getElementById("refmsg").textContent=code;
+}
 </script>
-
 </body>
 </html>
